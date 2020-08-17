@@ -4,6 +4,7 @@ const db = require('./db')
 let server = restify.createServer();
 
 server.use(restify.plugins.queryParser({}));
+server.use(restify.plugins.bodyParser({}));
 server.get('/users', db.getUsers);
 server.get('/users/:id', db.getUserById);
 server.post('/users', db.createUser);

@@ -1,3 +1,5 @@
+const post = require('./post')
+
 const Pool = require('pg').Pool
 const pool = new Pool({
     user: 'postgres',
@@ -27,9 +29,10 @@ const updateUser = async (req, res, next) => {
 }
 
 const createUser = async (req, res, next) => {
-    let name = req.query.name || req.params.name
-    let email = req.query.email || req.params.email
+    let name = req.body.name
+    let email = req.body.email
     let user = await pool.query(`INSERT INTO users (name, email) VALUES ('${name}', '${email}') RETURNING *;`)
+    post.linenotify(user.rows[0].name, user.rows[0].email)
     res.send(user.rows)
 }
 
